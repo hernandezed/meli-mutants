@@ -1,0 +1,4 @@
+mutants:
+  data_access:
+    dna_entries_key_prefix: "dna_entries:"
+    dna_hll_key_prefix: "dna_hll:"
