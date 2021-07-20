@@ -1,18 +1,18 @@
 package com.meli.mutants.unit.business.domain;
 
-import com.meli.mutants.business.domain.SampleBO;
-import com.meli.mutants.business.domain.Sequencer;
+import com.meli.mutants.business.domain.DnaSampleBO;
+import com.meli.mutants.business.domain.SequencerBO;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class SequencerTest {
+class SequencerBOTest {
 
-    Sequencer sequencer = new Sequencer();
+    SequencerBO sequencer = new SequencerBO();
 
     @Test
     void sequence_withHorizontalAndVerticalSequenceOfMutantSample_mustReturnTrue() {
-        var sample = new SampleBO(new String[]{
+        var sample = new DnaSampleBO(new String[]{
                 "AAAATA",
                 "CCGTGC",
                 "TTATGT",
@@ -25,7 +25,7 @@ class SequencerTest {
 
     @Test
     void sequence_withDiagonalSequenceOfMutantSample_mustReturnTrue() {
-        var sample = new SampleBO(new String[]{
+        var sample = new DnaSampleBO(new String[]{
                 "AACATAT",
                 "CCGTGCG",
                 "TTCTCTC",
@@ -38,7 +38,7 @@ class SequencerTest {
 
     @Test
     void sequence_withConsecutiveSequences_mustReturnTrue() {
-        var sample = new SampleBO(new String[]{
+        var sample = new DnaSampleBO(new String[]{
                 "AAAAAAAA",
                 "TAGTACAA",
                 "ATGTGTAA",
@@ -53,7 +53,7 @@ class SequencerTest {
 
     @Test
     void sequence_withNormalHumanSample_mustReturnFalse() {
-        var sample = new SampleBO(new String[]{
+        var sample = new DnaSampleBO(new String[]{
                 "AACAGA", "CCGTGC", "TTATGT", "AGAATG", "CCGCTA", "TCACTG"});
         boolean result = sequencer.isMutant(sample);
         assertThat(result).isFalse();
