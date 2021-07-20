@@ -9,8 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -19,23 +20,28 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     DnaResultRepository dnaResultRepository;
     @Autowired
     RedisTemplate<String, DnaResult> dnaResultTemplate;
+
     @Autowired
     DnaResultPrefixSettings settings;
     private String mutantEntryKey;
     private String humanEntryKey;
-    private String mutantHllKey;
-    private String humanHllKey;
+    private String mutantCountKey;
+    private String humanCountKey;
 
     @BeforeEach
     void setup() {
         mutantEntryKey = settings.getEntryKey("mutant");
         humanEntryKey = settings.getEntryKey("human");
-        mutantHllKey = settings.getHllKey("mutant");
-        humanHllKey = settings.getHllKey("human");
+        mutantCountKey = settings.dnaCounterKey("mutant");
+        humanCountKey = settings.dnaCounterKey("human");
         dnaResultTemplate.delete(mutantEntryKey);
         dnaResultTemplate.delete(humanEntryKey);
-        dnaResultTemplate.delete(mutantHllKey);
-        dnaResultTemplate.delete(humanHllKey);
+        dnaResultTemplate.delete(settings.getHllKey("mutant"));
+        dnaResultTemplate.delete(settings.getHllKey("human"));
+        dnaResultTemplate.delete(mutantCountKey);
+        dnaResultTemplate.delete(humanCountKey);
+        new RedisAtomicLong(mutantCountKey, dnaResultTemplate.getConnectionFactory()).set(0);
+        new RedisAtomicLong(humanCountKey, dnaResultTemplate.getConnectionFactory()).set(0);
     }
 
     @Test
@@ -44,10 +50,10 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
                 "AAAA", "CTCT", "CTCT", "CTCT"
         }, DnaResultType.MUTANT);
         dnaResultRepository.saveAndLog(dnaResult);
-        Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
-        Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
-        Long mutantCount = dnaResultTemplate.opsForHyperLogLog().size(mutantHllKey);
-        Long humanCount = dnaResultTemplate.opsForHyperLogLog().size(humanHllKey);
+        List<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForList().range(mutantEntryKey, 0, -1);
+        List<DnaResult> humansDnaResults = dnaResultTemplate.opsForList().range(humanEntryKey, 0, -1);
+        Long mutantCount = new RedisAtomicLong(mutantCountKey, dnaResultTemplate.getConnectionFactory()).get();
+        Long humanCount = new RedisAtomicLong(humanCountKey, dnaResultTemplate.getConnectionFactory()).get();
         assertThat(mutantsDnaResults).containsExactly(dnaResult);
         assertThat(humansDnaResults).isEmpty();
         assertThat(mutantCount).isEqualTo(1);
@@ -64,10 +70,10 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         }, DnaResultType.MUTANT);
         dnaResultRepository.saveAndLog(dnaResult);
         dnaResultRepository.saveAndLog(otherDnaResult);
-        Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
-        Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
-        Long mutantCount = dnaResultTemplate.opsForHyperLogLog().size(mutantHllKey);
-        Long humanCount = dnaResultTemplate.opsForHyperLogLog().size(humanHllKey);
+        List<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForList().range(mutantEntryKey, 0, -1);
+        List<DnaResult> humansDnaResults = dnaResultTemplate.opsForList().range(humanEntryKey, 0, -1);
+        Long mutantCount = new RedisAtomicLong(mutantCountKey, dnaResultTemplate.getConnectionFactory()).get();
+        Long humanCount = new RedisAtomicLong(humanCountKey, dnaResultTemplate.getConnectionFactory()).get();
         assertThat(mutantsDnaResults).containsExactlyInAnyOrder(dnaResult, otherDnaResult);
         assertThat(humansDnaResults).isEmpty();
         assertThat(mutantCount).isEqualTo(2);
@@ -81,10 +87,10 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         }, DnaResultType.MUTANT);
         dnaResultRepository.saveAndLog(dnaResult);
         dnaResultRepository.saveAndLog(dnaResult);
-        Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
-        Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
-        Long mutantCount = dnaResultTemplate.opsForHyperLogLog().size(mutantHllKey);
-        Long humanCount = dnaResultTemplate.opsForHyperLogLog().size(humanHllKey);
+        List<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForList().range(mutantEntryKey, 0, -1);
+        List<DnaResult> humansDnaResults = dnaResultTemplate.opsForList().range(humanEntryKey, 0, -1);
+        Long mutantCount = new RedisAtomicLong(mutantCountKey, dnaResultTemplate.getConnectionFactory()).get();
+        Long humanCount = new RedisAtomicLong(humanCountKey, dnaResultTemplate.getConnectionFactory()).get();
         assertThat(mutantsDnaResults).containsExactly(dnaResult);
         assertThat(humansDnaResults).isEmpty();
         assertThat(mutantCount).isEqualTo(1);
@@ -98,15 +104,28 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         }, DnaResultType.HUMAN);
         dnaResultRepository.saveAndLog(dnaResult);
         dnaResultRepository.saveAndLog(dnaResult);
-        Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
-        Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
-        Long mutantCount = dnaResultTemplate.opsForHyperLogLog().size(mutantHllKey);
-        Long humanCount = dnaResultTemplate.opsForHyperLogLog().size(humanHllKey);
+        List<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForList().range(mutantEntryKey, 0, -1);
+        List<DnaResult> humansDnaResults = dnaResultTemplate.opsForList().range(humanEntryKey, 0, -1);
+        Long mutantCount = new RedisAtomicLong(mutantCountKey, dnaResultTemplate.getConnectionFactory()).get();
+        Long humanCount = new RedisAtomicLong(humanCountKey, dnaResultTemplate.getConnectionFactory()).get();
         assertThat(mutantsDnaResults).isEmpty();
         assertThat(humansDnaResults).containsExactly(dnaResult);
-        assertThat(mutantCount).isEqualTo(0);
+        assertThat(mutantCount).isZero();
         assertThat(humanCount).isEqualTo(1);
     }
 
+    @Test
+    void count_withoutInsertions_mustReturnZero() {
+        Long count = dnaResultRepository.count(DnaResultType.MUTANT);
+        assertThat(count).isZero();
+    }
+
+    @Test
+    void count_withMultipleInsertions_mustReturnSameNumber() {
+        RedisAtomicLong rLong = new RedisAtomicLong(mutantCountKey, dnaResultTemplate.getConnectionFactory());
+        int value = 1000000;
+        rLong.set(value);
+        assertThat(dnaResultRepository.count(DnaResultType.MUTANT)).isEqualTo(value);
+    }
 
 }

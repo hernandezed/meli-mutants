@@ -1,15 +1,18 @@
 package com.meli.mutants.business.domain;
 
+import com.meli.mutants.data_access.repositories.dna_result.entities.DnaResult;
+import com.meli.mutants.data_access.repositories.dna_result.entities.DnaResultType;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SampleBO {
-    private final String[] adn;
+public class DnaSampleBO {
+    private final String[] dna;
     private final HashMap<PairBO, Set<Direction>> visited;
 
-    public SampleBO(String[] adn) {
-        this.adn = adn;
+    public DnaSampleBO(String[] dna) {
+        this.dna = dna;
         visited = new HashMap<>();
     }
 
@@ -27,15 +30,19 @@ public class SampleBO {
         var key = new PairBO(row, col);
         visited.computeIfAbsent(key, k -> new HashSet<>());
         visited.get(key).add(direction);
-        return adn[row].charAt(col);
+        return dna[row].charAt(col);
     }
 
     public int getRowsCount() {
-        return adn.length;
+        return dna.length;
     }
 
     public int getColumnsCount() {
-        return adn[0].length();
+        return dna[0].length();
+    }
+
+    public DnaResult toDnaResult(boolean result) {
+        return new DnaResult(dna, DnaResultType.valueOf(result));
     }
 
 }

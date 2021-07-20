@@ -2,9 +2,9 @@ package com.meli.mutants.business.domain;
 
 import java.util.Iterator;
 
-public class Sequencer {
+public class SequencerBO {
 
-    public boolean isMutant(SampleBO dna) {
+    public boolean isMutant(DnaSampleBO dna) {
         int count = 0;
         for (int i = 0; i < dna.getRowsCount() && count < 2; i++) {
             for (int j = 0; j < dna.getColumnsCount() && count < 2; j++) {
@@ -19,6 +19,8 @@ public class Sequencer {
                 }
             }
         }
+
+
         return count >= 2;
     }
 
@@ -26,7 +28,7 @@ public class Sequencer {
         return i >= min && i < max;
     }
 
-    private boolean search(SampleBO dna, char character, Direction direction, int row, int col, int count) {
+    private boolean search(DnaSampleBO dna, char character, Direction direction, int row, int col, int count) {
         if (count == 4) {
             return true;
         }

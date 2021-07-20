@@ -1,7 +1,7 @@
 package com.meli.mutants.business.usecases;
 
-import com.meli.mutants.business.domain.SampleBO;
+import com.meli.mutants.business.domain.DnaSampleBO;
 
 public interface EvaluateDnaUseCase {
-    boolean execute(SampleBO sampleBO);
+    boolean execute(DnaSampleBO dnaSampleBO);
 }
