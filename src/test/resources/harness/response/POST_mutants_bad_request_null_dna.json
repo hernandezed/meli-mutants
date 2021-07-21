@@ -1,0 +1,10 @@
+{
+  "code": "BAD_REQUEST",
+  "message": "Invalid request",
+  "errors": [
+    {
+      "code": "mutants.dna.not.null",
+      "message": "The dna must not be null"
+    }
+  ]
+}

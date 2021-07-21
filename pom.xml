@@ -65,6 +65,12 @@
             <artifactId>mockito-inline</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.json-unit</groupId>
+            <artifactId>json-unit-assertj</artifactId>
+            <version>2.27.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -96,6 +102,11 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.5</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/meli/mutants/MeliMutantsApplication.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>

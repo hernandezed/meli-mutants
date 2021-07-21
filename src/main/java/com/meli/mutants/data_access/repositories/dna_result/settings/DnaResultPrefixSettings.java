@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "mutants.data-access")
 @Setter
-@Getter
 public class DnaResultPrefixSettings {
     String dnaEntriesKeyPrefix;
     String dnaHllKeyPrefix;

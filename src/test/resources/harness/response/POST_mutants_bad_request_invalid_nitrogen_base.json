@@ -1,0 +1,10 @@
+{
+  "code": "BAD_REQUEST",
+  "message": "Invalid request",
+  "errors": [
+    {
+      "code": "mutants.dna.invalid.nitrogen.base",
+      "message": "Nitrogenous bases can only be A, T, C or G"
+    }
+  ]
+}

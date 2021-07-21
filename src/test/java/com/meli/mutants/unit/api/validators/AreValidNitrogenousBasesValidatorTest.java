@@ -1,13 +1,13 @@
 package com.meli.mutants.unit.api.validators;
 
-import com.meli.mutants.api.validators.IsValidDnaValidator;
+import com.meli.mutants.api.validators.AreValidNitrogenousBasesValidator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class IsValidDnaValidatorTest {
+class AreValidNitrogenousBasesValidatorTest {
 
-    IsValidDnaValidator validator = new IsValidDnaValidator();
+    AreValidNitrogenousBasesValidator validator = new AreValidNitrogenousBasesValidator();
 
     @Test
     void validate_withOnlyTCGA_allStringOfSameSize_lengthGreaterThanFour_returnTrue() {
@@ -34,27 +34,8 @@ class IsValidDnaValidatorTest {
     }
 
     @Test
-    void validate_withFirstRowDifferentLength_returnFalse() {
-        String[] value = new String[]{
-                "ACT",
-                "CTGA",
-                "TGAC",
-                "GACT"
-        };
-        assertThat(validator.isValid(value, null))
-                .isFalse();
+    void validate_withNull_returnTrue() {
+        assertThat(validator.isValid(null, null)).isTrue();
     }
-
-    @Test
-    void validate_withDifferentRowAndColumnLength_returnFalse() {
-        String[] value = new String[]{
-                "ACTG",
-                "CTGA",
-                "TGAC"
-        };
-        assertThat(validator.isValid(value, null))
-                .isFalse();
-    }
-
 
 }

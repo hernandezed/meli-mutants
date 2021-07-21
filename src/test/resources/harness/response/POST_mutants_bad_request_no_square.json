@@ -1,0 +1,10 @@
+{
+  "code": "BAD_REQUEST",
+  "message": "Invalid request",
+  "errors": [
+    {
+      "code": "mutants.dna.no.square",
+      "message": "The dna must be an array of size NxN"
+    }
+  ]
+}
