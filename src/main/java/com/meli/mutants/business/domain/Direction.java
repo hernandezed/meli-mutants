@@ -47,11 +47,11 @@ public enum Direction {
         return equivalence.get(direction);
     }
 
-    public static List<Direction> valuesAt(int x, int y, int maxX, int maxY, int searchedLength) {
-        boolean canLeft = x >= searchedLength;
-        boolean canRight = (maxX - x) >= searchedLength;
-        boolean canUp = y >= searchedLength;
-        boolean canDown = (maxY - y) >= searchedLength;
+    public static List<Direction> valuesAt(int x, int y, int maxX, int maxY) {
+        boolean canLeft = y >= 4;
+        boolean canRight = (maxX - y) >= 4;
+        boolean canUp = x >= 4;
+        boolean canDown = (maxY - x) >= 4;
 
         boolean canLeftToRightFromUp = (canDown && canRight);
         boolean canRightToLeftFromDown = (canUp && canLeft);
@@ -60,26 +60,22 @@ public enum Direction {
 
         List<Direction> angles = new ArrayList<>();
 
-        if (canLeft) {
+        if (canLeft)
             angles.add(A180);
-        }
-        if (canRight) {
+        if (canRight)
             angles.add(A0);
-        }
-        if (canUp) {
+        if (canUp)
             angles.add(A90);
-        }
-        if (canDown) {
+        if (canDown)
             angles.add(A270);
-        }
-        if (canLeftToRightFromUp || canLeftToRightFromDown) {
+        if (canLeftToRightFromUp)
             angles.add(A315);
-            angles.add(A135);
-        }
-        if (canRightToLeftFromDown || canRightToLeftFromUp) {
+        if (canLeftToRightFromDown)
             angles.add(A45);
+        if (canRightToLeftFromDown)
+            angles.add(A135);
+        if (canRightToLeftFromUp)
             angles.add(A225);
-        }
         return angles;
     }
 }

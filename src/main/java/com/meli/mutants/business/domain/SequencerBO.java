@@ -8,7 +8,14 @@ public class SequencerBO {
         int count = 0;
         for (int i = 0; i < dna.getRowsCount() && count < 2; i++) {
             for (int j = 0; j < dna.getColumnsCount() && count < 2; j++) {
-                Iterator<Direction> directions = Direction.valuesAt(i, j, dna.getRowsCount(), dna.getColumnsCount(), 4).iterator();
+                if (i == 1 && j == 1)
+                    System.out.println();
+                if (i == 1 && j == 5)
+                    System.out.println();
+                if (i == 0 && j == 6)
+                    System.out.println();
+
+                Iterator<Direction> directions = Direction.valuesAt(i, j, dna.getRowsCount(), dna.getColumnsCount()).iterator();
                 while (directions.hasNext() && count < 2) {
                     Direction direction = directions.next();
                     if (dna.canVisit(i, j, direction)) {

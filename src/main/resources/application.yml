@@ -1,4 +1,8 @@
 mutants:
-  data-access:
+  data_access:
     dna_entries_key_prefix: "dna_entries:"
     dna_hll_key_prefix: "dna_hll:"
+    dna_counter_key_prefix: "dna_count:"
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
