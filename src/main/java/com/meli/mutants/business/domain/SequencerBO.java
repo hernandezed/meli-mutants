@@ -1,27 +1,16 @@
 package com.meli.mutants.business.domain;
 
-import java.util.Iterator;
-
 public class SequencerBO {
 
     public boolean isMutant(DnaSampleBO dna) {
-        int count = 0;
-        for (int i = 0; i < dna.getRowsCount() && count < 2; i++) {
-            for (int j = 0; j < dna.getColumnsCount() && count < 2; j++) {
-                if (i == 1 && j == 1)
-                    System.out.println();
-                if (i == 1 && j == 5)
-                    System.out.println();
-                if (i == 0 && j == 6)
-                    System.out.println();
-
-                Iterator<Direction> directions = Direction.valuesAt(i, j, dna.getRowsCount(), dna.getColumnsCount()).iterator();
+        var count = 0;
+        for (var i = 0; i < dna.getRowsCount() && count < 2; i++) {
+            for (var j = 0; j < dna.getColumnsCount() && count < 2; j++) {
+                var directions = Direction.valuesAt(i, j, dna.getRowsCount(), dna.getColumnsCount()).iterator();
                 while (directions.hasNext() && count < 2) {
-                    Direction direction = directions.next();
-                    if (dna.canVisit(i, j, direction)) {
-                        if (search(dna, 'A', direction, i, j, 0)) {
-                            count++;
-                        }
+                    var direction = directions.next();
+                    if (dna.canVisit(i, j, direction) && search(dna, 'A', direction, i, j, 0)) {
+                        count++;
                     }
                 }
             }

@@ -9,7 +9,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
+import javax.validation.constraints.NotNull;
+import java.util.EnumMap;
+import java.util.Map;
 
 @Repository
 public class DnaResultRepositoryImpl implements DnaResultRepository {
@@ -17,12 +19,12 @@ public class DnaResultRepositoryImpl implements DnaResultRepository {
     private final RedisTemplate<String, DnaResult> dnaResultTemplate;
     private final DnaResultPrefixSettings dnaResultPrefixSettings;
 
-    private final HashMap<DnaResultType, RedisAtomicLong> counters;
+    private final Map<DnaResultType, RedisAtomicLong> counters;
 
     public DnaResultRepositoryImpl(RedisTemplate<String, DnaResult> dnaResultTemplate, DnaResultPrefixSettings dnaResultPrefixSettings) {
         this.dnaResultTemplate = dnaResultTemplate;
         this.dnaResultPrefixSettings = dnaResultPrefixSettings;
-        counters = new HashMap<>();
+        counters = new EnumMap<>(DnaResultType.class);
         for (DnaResultType resultType : DnaResultType.values()) {
             counters.put(resultType, new RedisAtomicLong(dnaResultPrefixSettings.dnaCounterKey(resultType.name().toLowerCase()),
                     dnaResultTemplate.getConnectionFactory()));

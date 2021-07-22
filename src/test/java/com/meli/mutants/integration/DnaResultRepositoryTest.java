@@ -57,7 +57,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         assertThat(mutantsDnaResults).containsExactly(dnaResult);
         assertThat(humansDnaResults).isEmpty();
         assertThat(mutantCount).isEqualTo(1);
-        assertThat(humanCount).isEqualTo(0);
+        assertThat(humanCount).isZero();
     }
 
     @Test
@@ -77,7 +77,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         assertThat(mutantsDnaResults).containsExactlyInAnyOrder(dnaResult, otherDnaResult);
         assertThat(humansDnaResults).isEmpty();
         assertThat(mutantCount).isEqualTo(2);
-        assertThat(humanCount).isEqualTo(0);
+        assertThat(humanCount).isZero();
     }
 
     @Test
@@ -94,7 +94,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         assertThat(mutantsDnaResults).containsExactly(dnaResult);
         assertThat(humansDnaResults).isEmpty();
         assertThat(mutantCount).isEqualTo(1);
-        assertThat(humanCount).isEqualTo(0);
+        assertThat(humanCount).isZero();
     }
 
     @Test

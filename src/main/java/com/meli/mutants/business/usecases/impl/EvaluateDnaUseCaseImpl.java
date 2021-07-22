@@ -18,7 +18,7 @@ public class EvaluateDnaUseCaseImpl implements EvaluateDnaUseCase {
 
     @Override
     public boolean execute(DnaSampleBO dnaSampleBO) {
-        SequencerBO sequencerBO = new SequencerBO();
+        var sequencerBO = new SequencerBO();
         boolean result = sequencerBO.isMutant(dnaSampleBO);
         try {
             dnaResultRepository.saveAndLog(dnaSampleBO.toDnaResult(result));

@@ -1,7 +1,7 @@
 package com.meli.mutants.business.domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +17,7 @@ public enum Direction {
 
     private final int x;
     private final int y;
-    private static final Map<Direction, Direction> equivalence = new HashMap<>();
+    private static final Map<Direction, Direction> equivalence = new EnumMap<>(Direction.class);
 
     static {
         equivalence.put(Direction.A0, Direction.A180);

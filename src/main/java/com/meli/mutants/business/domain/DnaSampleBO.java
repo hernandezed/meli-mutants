@@ -20,7 +20,7 @@ public class DnaSampleBO {
         Set<Direction> directionsVisited = visited.get(new PairBO(row, col));
         boolean isNull = directionsVisited == null;
         if (!isNull) {
-            isNull = !(directionsVisited.contains(direction) | directionsVisited.contains(Direction.getEquivalent(direction)));
+            isNull = !(directionsVisited.contains(direction) || directionsVisited.contains(Direction.getEquivalent(direction)));
         }
 
         return isNull;

@@ -1,7 +1,5 @@
 package com.meli.mutants.data_access.repositories.dna_result.settings;
 
-
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
