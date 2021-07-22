@@ -22,6 +22,6 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build
-      run: mvn clean compile
+      run: mvn compile
     - name: Test
       run: mvn test
