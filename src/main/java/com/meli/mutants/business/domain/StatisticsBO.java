@@ -1,5 +1,8 @@
 package com.meli.mutants.business.domain;
 
+import lombok.Getter;
+
+@Getter
 public class StatisticsBO {
     long mutantsCount;
     long humansCount;
@@ -11,6 +14,6 @@ public class StatisticsBO {
 
 
     public double getRatio() {
-        return (double)mutantsCount / humansCount;
+        return (double) mutantsCount / humansCount;
     }
 }

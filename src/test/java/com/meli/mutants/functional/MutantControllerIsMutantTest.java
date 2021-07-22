@@ -14,7 +14,7 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class MutantControllerTest extends MeliMutantsApplicationTests {
+class MutantControllerIsMutantTest extends MeliMutantsApplicationTests {
 
     @Autowired
     TestRestTemplate restTemplate;

@@ -7,7 +7,9 @@ import com.meli.mutants.data_access.repositories.dna_result.DnaResultRepository;
 import com.meli.mutants.data_access.repositories.dna_result.entities.DnaResultType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class GetStatisticsUseCaseImpl implements GetStatisticsUseCase {
     private final DnaResultRepository dnaResultRepository;
