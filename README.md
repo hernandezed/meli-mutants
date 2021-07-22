@@ -2,4 +2,4 @@
 
 
 
-![Image](./docs/meme.png)
+![Image](./docs/meme.png | height=100)
