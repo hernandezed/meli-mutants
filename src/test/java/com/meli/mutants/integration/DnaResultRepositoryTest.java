@@ -34,7 +34,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     }
 
     @Test
-    void saveAndLog_withMutantResult_persistInRedisSet() {
+    void save_withMutantResult_persistInRedisSet() {
         String[] dna = {
                 "AAAA", "CTCT", "CTCT", "CTCT"
         };
@@ -47,7 +47,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     }
 
     @Test
-    void saveAndLog_withDifferentMutantResult_persistInRedisSet() {
+    void save_withDifferentMutantResult_persistInRedisSet() {
         String[] ciclopsDna = {
                 "AAAA", "CTCT", "CTCT", "CTCT"
         };
@@ -65,7 +65,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     }
 
     @Test
-    void saveAndLog_twoTimesSameMutantResult_persistInRedisSetOneTime() {
+    void save_twoTimesSameMutantResult_persistInRedisSetOneTime() {
         var dnaResult = new DnaResult(new String[]{
                 "AAAA", "CTCA", "CTCT", "CTCT"
         }, DnaResultType.MUTANT);
@@ -76,7 +76,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     }
 
     @Test
-    void saveAndLog_humanDna_persistInRedisSet() {
+    void save_humanDna_persistInRedisSet() {
         String[] dna = {
                 "AAGA", "CTCA", "CTCT", "CTCT"
         };
