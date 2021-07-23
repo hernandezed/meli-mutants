@@ -51,3 +51,11 @@ En la raíz del proyecto
 
 3. El aplicativo quedara levantado en el puerto 8080
 
+## Documentacion
+
+### Explicacion del algoritmo
+![Image](./docs/explicacion_algoritmo.png)
+
+### Swagger UI
+http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+

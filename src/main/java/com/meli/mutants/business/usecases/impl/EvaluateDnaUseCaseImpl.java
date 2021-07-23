@@ -21,10 +21,10 @@ public class EvaluateDnaUseCaseImpl implements EvaluateDnaUseCase {
     @Override
     @CacheEvict(cacheNames = "result-stats", allEntries = true)
     public boolean execute(DnaSampleBO dnaSampleBO) {
-        if (dnaResultRepository.exists(dnaSampleBO.getDna(), DnaResultType.MUTANT)) {
+        if (Boolean.TRUE.equals(dnaResultRepository.exists(dnaSampleBO.getDna(), DnaResultType.MUTANT))) {
             logger.debug("Returning MUTANT result from cache");
             return true;
-        } else if (dnaResultRepository.exists(dnaSampleBO.getDna(), DnaResultType.HUMAN)) {
+        } else if (Boolean.TRUE.equals(dnaResultRepository.exists(dnaSampleBO.getDna(), DnaResultType.HUMAN))) {
             logger.debug("Returning HUMAN result from cache");
             return false;
         }
