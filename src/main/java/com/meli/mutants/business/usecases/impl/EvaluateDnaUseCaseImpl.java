@@ -4,11 +4,11 @@ import com.meli.mutants.business.domain.DnaSampleBO;
 import com.meli.mutants.business.domain.SequencerBO;
 import com.meli.mutants.business.usecases.EvaluateDnaUseCase;
 import com.meli.mutants.data_access.repositories.dna_result.DnaResultRepository;
+import com.meli.mutants.data_access.repositories.dna_result.entities.DnaResultType;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,11 @@ public class EvaluateDnaUseCaseImpl implements EvaluateDnaUseCase {
     @Override
     @CacheEvict(cacheNames = "result-stats", allEntries = true)
     public boolean execute(DnaSampleBO dnaSampleBO) {
+        if (dnaResultRepository.exists(dnaSampleBO.getDna(), DnaResultType.MUTANT)) {
+            return true;
+        } else if (dnaResultRepository.exists(dnaSampleBO.getDna(), DnaResultType.HUMAN)) {
+            return false;
+        }
         var sequencerBO = new SequencerBO();
         boolean result = sequencerBO.isMutant(dnaSampleBO);
         try {

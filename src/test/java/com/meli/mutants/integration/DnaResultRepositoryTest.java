@@ -102,4 +102,22 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         assertThat(dnaResultRepository.count(DnaResultType.MUTANT)).isEqualTo(1);
     }
 
+    @Test
+    void exists_withAlreadyInsertedDna_returnTrue() {
+        String[] dna = {
+                "AAGA", "CTCA", "CTCT", "CTCT"
+        };
+        dnaResultTemplate.opsForSet().add(settings.getEntryKey(DnaResultType.MUTANT.name().toLowerCase()),
+                dna);
+        assertThat(dnaResultRepository.exists(dna, DnaResultType.MUTANT)).isTrue();
+    }
+
+    @Test
+    void exists_withAlreadyInsertedDna_returnFalse() {
+        String[] dna = {
+                "AAGA", "CTCA", "CTCT", "CTCT"
+        };
+        assertThat(dnaResultRepository.exists(dna, DnaResultType.MUTANT)).isFalse();
+    }
+
 }

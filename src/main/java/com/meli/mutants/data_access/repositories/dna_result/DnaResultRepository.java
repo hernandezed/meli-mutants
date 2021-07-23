@@ -7,4 +7,6 @@ public interface DnaResultRepository {
     void save(DnaResult dnaResult);
 
     Long count(DnaResultType dnaResultType);
+
+    Boolean exists(String[] dna, DnaResultType dnaResultType);
 }

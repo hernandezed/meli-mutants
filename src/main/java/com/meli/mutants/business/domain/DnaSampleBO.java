@@ -45,4 +45,7 @@ public class DnaSampleBO {
         return new DnaResult(dna, DnaResultType.valueOf(result));
     }
 
+    public String[] getDna() {
+        return dna;
+    }
 }

@@ -28,4 +28,9 @@ public class DnaResultRepositoryImpl implements DnaResultRepository {
     public Long count(DnaResultType dnaResultType) {
         return dnaResultTemplate.opsForSet().size(dnaResultPrefixSettings.getEntryKey(dnaResultType.name().toLowerCase()));
     }
+
+    @Override
+    public Boolean exists(String[] dna, DnaResultType dnaResultType) {
+        return dnaResultTemplate.opsForSet().isMember(dnaResultPrefixSettings.getEntryKey(dnaResultType.name().toLowerCase()), dna);
+    }
 }
