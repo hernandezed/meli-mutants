@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  mutants-application:
+    build: ""
+    restart: always
+    container_name: mutants-application
+    ports:
+      - "8080:8080"
+    working_dir: /opt/app
+    depends_on:
+      - mutants-redis
+    environment:
+      SPRING_REDIS_URL: redis://:@mutants-redis:6379
+    networks:
+      - mutants-nw
+  mutants-redis:
+    image: redis
+    container_name: mutants-redis
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - mutants-nw
+networks:
+  mutants-nw:
