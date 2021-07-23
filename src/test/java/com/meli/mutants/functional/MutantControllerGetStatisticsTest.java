@@ -9,9 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -30,13 +30,14 @@ class MutantControllerGetStatisticsTest extends MeliMutantsApplicationTests {
     DnaResultPrefixSettings dnaResultPrefixSettings;
     @Autowired
     RedisTemplate<String, DnaResult> dnaResultRedisTemplate;
-    RedisAtomicLong humanCounter;
-    RedisAtomicLong mutantCounter;
+    @Autowired
+    CacheManager cacheManager;
 
     @BeforeEach
     void setup() {
         dnaResultRedisTemplate.delete(dnaResultPrefixSettings.getEntryKey(DnaResultType.MUTANT.name().toLowerCase()));
         dnaResultRedisTemplate.delete(dnaResultPrefixSettings.getEntryKey(DnaResultType.HUMAN.name().toLowerCase()));
+        cacheManager.getCache("result-stats").clear();
     }
 
     @Test
