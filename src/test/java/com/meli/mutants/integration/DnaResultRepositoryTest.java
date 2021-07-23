@@ -18,7 +18,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     @Autowired
     DnaResultRepository dnaResultRepository;
     @Autowired
-    RedisTemplate<String, DnaResult> dnaResultTemplate;
+    RedisTemplate<String, String[]> dnaResultTemplate;
 
     @Autowired
     DnaResultPrefixSettings settings;
@@ -35,29 +35,32 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
 
     @Test
     void saveAndLog_withMutantResult_persistInRedisSet() {
-        var dnaResult = new DnaResult(new String[]{
+        String[] dna = {
                 "AAAA", "CTCT", "CTCT", "CTCT"
-        }, DnaResultType.MUTANT);
+        };
+        var dnaResult = new DnaResult(dna, DnaResultType.MUTANT);
         dnaResultRepository.save(dnaResult);
-        Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
-        Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
-        assertThat(mutantsDnaResults).containsExactly(dnaResult);
+        Set<String[]> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
+        Set<String[]> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
+        assertThat(mutantsDnaResults).containsExactly(dna);
         assertThat(humansDnaResults).isEmpty();
     }
 
     @Test
     void saveAndLog_withDifferentMutantResult_persistInRedisSet() {
-        var dnaResult = new DnaResult(new String[]{
+        String[] ciclopsDna = {
                 "AAAA", "CTCT", "CTCT", "CTCT"
-        }, DnaResultType.MUTANT);
-        var otherDnaResult = new DnaResult(new String[]{
+        };
+        String[] wolverineDna = {
                 "AAAA", "CGCT", "CTCT", "CTCT"
-        }, DnaResultType.MUTANT);
+        };
+        var dnaResult = new DnaResult(ciclopsDna, DnaResultType.MUTANT);
+        var otherDnaResult = new DnaResult(wolverineDna, DnaResultType.MUTANT);
         dnaResultRepository.save(dnaResult);
         dnaResultRepository.save(otherDnaResult);
-        Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
-        Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
-        assertThat(mutantsDnaResults).containsExactlyInAnyOrder(dnaResult, otherDnaResult);
+        Set<String[]> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
+        Set<String[]> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
+        assertThat(mutantsDnaResults).containsExactlyInAnyOrder(ciclopsDna, wolverineDna);
         assertThat(humansDnaResults).isEmpty();
     }
 
@@ -74,15 +77,16 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
 
     @Test
     void saveAndLog_humanDna_persistInRedisSet() {
-        var dnaResult = new DnaResult(new String[]{
+        String[] dna = {
                 "AAGA", "CTCA", "CTCT", "CTCT"
-        }, DnaResultType.HUMAN);
+        };
+        var dnaResult = new DnaResult(dna, DnaResultType.HUMAN);
         dnaResultRepository.save(dnaResult);
         dnaResultRepository.save(dnaResult);
-        Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
-        Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
+        Set<String[]> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
+        Set<String[]> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
         assertThat(mutantsDnaResults).isEmpty();
-        assertThat(humansDnaResults).containsExactly(dnaResult);
+        assertThat(humansDnaResults).containsExactly(dna);
     }
 
     @Test
@@ -94,7 +98,7 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     @Test
     void count_withMultipleInsertions_mustReturnSameNumber() {
         dnaResultTemplate.opsForSet().add(settings.getEntryKey(DnaResultType.MUTANT.name().toLowerCase()),
-                new DnaResult(null, DnaResultType.MUTANT));
+                new String[]{});
         assertThat(dnaResultRepository.count(DnaResultType.MUTANT)).isEqualTo(1);
     }
 

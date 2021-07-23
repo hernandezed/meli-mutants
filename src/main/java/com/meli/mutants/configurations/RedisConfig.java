@@ -20,6 +20,14 @@ public class RedisConfig {
     }
 
     @Bean
+    public RedisTemplate<String, String[]> dnaArrayResultRedisTemplate(LettuceConnectionFactory connectionFactory) {
+        var template = new RedisTemplate<String, String[]>();
+        template.setConnectionFactory(connectionFactory);
+        template.afterPropertiesSet();
+        return template;
+    }
+
+    @Bean
     public LettuceClientConfigurationBuilderCustomizer lettuceClientConfigurationBuilderCustomizer() {
         return clientConfigurationBuilder -> {
             if (clientConfigurationBuilder.build().isUseSsl()) {

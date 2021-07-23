@@ -11,17 +11,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DnaResultRepositoryImpl implements DnaResultRepository {
 
-    private final RedisTemplate<String, DnaResult> dnaResultTemplate;
+    private final RedisTemplate<String, String[]> dnaResultTemplate;
     private final DnaResultPrefixSettings dnaResultPrefixSettings;
 
-    public DnaResultRepositoryImpl(RedisTemplate<String, DnaResult> dnaResultTemplate, DnaResultPrefixSettings dnaResultPrefixSettings) {
+    public DnaResultRepositoryImpl(RedisTemplate<String, String[]> dnaResultTemplate, DnaResultPrefixSettings dnaResultPrefixSettings) {
         this.dnaResultTemplate = dnaResultTemplate;
         this.dnaResultPrefixSettings = dnaResultPrefixSettings;
     }
 
     @Override
     public void save(DnaResult dnaResult) {
-        dnaResultTemplate.opsForSet().add(dnaResultPrefixSettings.getEntryKey(dnaResult.getResult().name().toLowerCase()), dnaResult);
+        dnaResultTemplate.opsForSet().add(dnaResultPrefixSettings.getEntryKey(dnaResult.getResult().name().toLowerCase()), dnaResult.getDna());
     }
 
     @Override
