@@ -1,6 +1,7 @@
 # Mutants ![Image](https://img.shields.io/badge/Java-11+-orange)
 
-API Rest para la deteccion de ADN mutante y su relacion respecto al ADN humano
+API Rest para la deteccion de ADN mutante y su relacion respecto al ADN humano.
+La misma se encuentra hosteada en Heroku, en la url https://meli-edderna-mutants.herokuapp.com/ (enviar un email a hernandezed.1991@gmail.com en caso de querer probarla, ya que la mantendre en modo mantenimiento)
 
 ![Image](./docs/meme.png)
 
