@@ -6,6 +6,7 @@ import com.meli.mutants.business.usecases.GetStatisticsUseCase;
 import com.meli.mutants.data_access.repositories.dna_result.DnaResultRepository;
 import com.meli.mutants.data_access.repositories.dna_result.entities.DnaResultType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class GetStatisticsUseCaseImpl implements GetStatisticsUseCase {
     private final DnaResultRepository dnaResultRepository;
 
     @Override
+    @Cacheable("result-stats")
     public StatisticsBO execute() {
         try {
             return new StatisticsBO(dnaResultRepository.count(DnaResultType.MUTANT),

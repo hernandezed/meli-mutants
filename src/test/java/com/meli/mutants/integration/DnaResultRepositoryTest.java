@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -32,16 +31,14 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
         humanEntryKey = settings.getEntryKey("human");
         dnaResultTemplate.delete(mutantEntryKey);
         dnaResultTemplate.delete(humanEntryKey);
-        dnaResultTemplate.delete(settings.getHllKey("mutant"));
-        dnaResultTemplate.delete(settings.getHllKey("human"));
     }
 
     @Test
-    void saveAndLog_withMutantResult_persistInRedisSetAndHyperLogLog() {
+    void saveAndLog_withMutantResult_persistInRedisSet() {
         var dnaResult = new DnaResult(new String[]{
                 "AAAA", "CTCT", "CTCT", "CTCT"
         }, DnaResultType.MUTANT);
-        dnaResultRepository.saveAndLog(dnaResult);
+        dnaResultRepository.save(dnaResult);
         Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
         Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
         assertThat(mutantsDnaResults).containsExactly(dnaResult);
@@ -49,15 +46,15 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     }
 
     @Test
-    void saveAndLog_withDifferentMutantResult_persistInRedisSetAndHyperLogLog() {
+    void saveAndLog_withDifferentMutantResult_persistInRedisSet() {
         var dnaResult = new DnaResult(new String[]{
                 "AAAA", "CTCT", "CTCT", "CTCT"
         }, DnaResultType.MUTANT);
         var otherDnaResult = new DnaResult(new String[]{
                 "AAAA", "CGCT", "CTCT", "CTCT"
         }, DnaResultType.MUTANT);
-        dnaResultRepository.saveAndLog(dnaResult);
-        dnaResultRepository.saveAndLog(otherDnaResult);
+        dnaResultRepository.save(dnaResult);
+        dnaResultRepository.save(otherDnaResult);
         Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
         Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
         assertThat(mutantsDnaResults).containsExactlyInAnyOrder(dnaResult, otherDnaResult);
@@ -65,23 +62,23 @@ class DnaResultRepositoryTest extends MeliMutantsApplicationTests {
     }
 
     @Test
-    void saveAndLog_twoTimesSameMutantResult_persistInRedisSetAndHyperLogLogOnlyOneTime() {
+    void saveAndLog_twoTimesSameMutantResult_persistInRedisSetOneTime() {
         var dnaResult = new DnaResult(new String[]{
                 "AAAA", "CTCA", "CTCT", "CTCT"
         }, DnaResultType.MUTANT);
-        dnaResultRepository.saveAndLog(dnaResult);
-        dnaResultRepository.saveAndLog(dnaResult);
+        dnaResultRepository.save(dnaResult);
+        dnaResultRepository.save(dnaResult);
         assertThat(dnaResultTemplate.opsForSet().size(mutantEntryKey)).isEqualTo(1);
         assertThat(dnaResultTemplate.opsForSet().size(humanEntryKey)).isZero();
     }
 
     @Test
-    void saveAndLog_humanDna_persistInRedisSetAndHyperLogLog() {
+    void saveAndLog_humanDna_persistInRedisSet() {
         var dnaResult = new DnaResult(new String[]{
                 "AAGA", "CTCA", "CTCT", "CTCT"
         }, DnaResultType.HUMAN);
-        dnaResultRepository.saveAndLog(dnaResult);
-        dnaResultRepository.saveAndLog(dnaResult);
+        dnaResultRepository.save(dnaResult);
+        dnaResultRepository.save(dnaResult);
         Set<DnaResult> mutantsDnaResults = dnaResultTemplate.opsForSet().members(mutantEntryKey);
         Set<DnaResult> humansDnaResults = dnaResultTemplate.opsForSet().members(humanEntryKey);
         assertThat(mutantsDnaResults).isEmpty();

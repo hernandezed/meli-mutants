@@ -9,18 +9,10 @@ import org.springframework.stereotype.Component;
 @Setter
 public class DnaResultPrefixSettings {
     String dnaEntriesKeyPrefix;
-    String dnaHllKeyPrefix;
-    String dnaCounterKeyPrefix;
 
     public String getEntryKey(String sufix) {
         return dnaEntriesKeyPrefix + sufix;
     }
 
-    public String getHllKey(String sufix) {
-        return dnaHllKeyPrefix + sufix;
-    }
 
-    public String dnaCounterKey(String sufix) {
-        return dnaCounterKeyPrefix + sufix;
-    }
 }

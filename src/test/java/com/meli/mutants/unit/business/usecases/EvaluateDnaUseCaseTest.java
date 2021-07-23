@@ -28,9 +28,9 @@ class EvaluateDnaUseCaseTest {
             when(mock.isMutant(sample)).thenReturn(false);
         })) {
             DnaResult result = new DnaResult(dnaSequence, DnaResultType.HUMAN);
-            doNothing().when(dnaResultRepository).saveAndLog(result);
+            doNothing().when(dnaResultRepository).save(result);
             assertThat(evaluateDnaUseCase.execute(sample)).isFalse();
-            verify(dnaResultRepository, times(1)).saveAndLog(result);
+            verify(dnaResultRepository, times(1)).save(result);
         }
     }
 
@@ -42,9 +42,9 @@ class EvaluateDnaUseCaseTest {
             when(mock.isMutant(sample)).thenReturn(true);
         })) {
             DnaResult result = new DnaResult(dnaSequence, DnaResultType.MUTANT);
-            doNothing().when(dnaResultRepository).saveAndLog(result);
+            doNothing().when(dnaResultRepository).save(result);
             assertThat(evaluateDnaUseCase.execute(sample)).isTrue();
-            verify(dnaResultRepository, times(1)).saveAndLog(result);
+            verify(dnaResultRepository, times(1)).save(result);
         }
     }
 
@@ -56,9 +56,9 @@ class EvaluateDnaUseCaseTest {
             when(mock.isMutant(sample)).thenReturn(true);
         })) {
             DnaResult result = new DnaResult(dnaSequence, DnaResultType.MUTANT);
-            doThrow(mock(DataAccessException.class)).when(dnaResultRepository).saveAndLog(result);
+            doThrow(mock(DataAccessException.class)).when(dnaResultRepository).save(result);
             assertThat(evaluateDnaUseCase.execute(sample)).isTrue();
-            verify(dnaResultRepository, times(1)).saveAndLog(result);
+            verify(dnaResultRepository, times(1)).save(result);
         }
     }
 }

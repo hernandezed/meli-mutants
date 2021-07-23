@@ -20,9 +20,8 @@ public class DnaResultRepositoryImpl implements DnaResultRepository {
     }
 
     @Override
-    public void saveAndLog(DnaResult dnaResult) {
-        String sufix = dnaResult.getResult().name().toLowerCase();
-        dnaResultTemplate.opsForSet().add(dnaResultPrefixSettings.getEntryKey(sufix), dnaResult);
+    public void save(DnaResult dnaResult) {
+        dnaResultTemplate.opsForSet().add(dnaResultPrefixSettings.getEntryKey(dnaResult.getResult().name().toLowerCase()), dnaResult);
     }
 
     @Override
