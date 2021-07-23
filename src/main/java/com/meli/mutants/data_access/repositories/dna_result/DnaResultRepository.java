@@ -6,5 +6,5 @@ import com.meli.mutants.data_access.repositories.dna_result.entities.DnaResultTy
 public interface DnaResultRepository {
     void saveAndLog(DnaResult dnaResult);
 
-    long count(DnaResultType dnaResultType);
+    Long count(DnaResultType dnaResultType);
 }
