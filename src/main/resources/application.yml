@@ -8,4 +8,4 @@ spring:
     type: redis
     redis:
       time-to-live: 3600000
-    cache-names: result-stats,dna-results
+    cache-names: result-stats

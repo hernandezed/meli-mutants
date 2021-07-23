@@ -10,11 +10,13 @@
     </parent>
     <groupId>com.meli</groupId>
     <artifactId>meli-mutants</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>meli-mutants</name>
-    <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
+        <embedded-redis.version>0.7.2</embedded-redis.version>
+        <json-unit-assertj.version>2.27.0</json-unit-assertj.version>
+        <springdoc-openapi-ui.version>1.5.9</springdoc-openapi-ui.version>
     </properties>
     <dependencies>
         <dependency>
@@ -45,7 +47,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.9</version>
+            <version>${springdoc-openapi-ui.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -65,13 +67,13 @@
         <dependency>
             <groupId>net.javacrumbs.json-unit</groupId>
             <artifactId>json-unit-assertj</artifactId>
-            <version>2.27.0</version>
+            <version>${json-unit-assertj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>it.ozimov</groupId>
             <artifactId>embedded-redis</artifactId>
-            <version>0.7.2</version>
+            <version>${embedded-redis.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

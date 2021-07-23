@@ -1,4 +1,4 @@
-# Mutants
+# Mutants ![Image](https://img.shields.io/badge/Java-11+-orange)
 
 API Rest para la deteccion de ADN mutante y su relacion respecto al ADN humano
 
@@ -36,7 +36,7 @@ realiza el trabajo de configurar un redis y correr el aplicativo. Para esto hare
 1. Ejecutar el comando
 
 ```shell
-docker-compose build
+docker compose build
 ```
 
 En la raíz del proyecto, por unica vez.
@@ -44,7 +44,7 @@ En la raíz del proyecto, por unica vez.
 2. Ejecutar el comando
 
 ```shell
-docker-compose up
+docker compose up
 ```
 
 En la raíz del proyecto
@@ -59,3 +59,11 @@ En la raíz del proyecto
 ### Swagger UI
 http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
+## Algunas consideraciones
+* El proyecto cuenta con 100% de coverage. Se excluyeron solo las clases de configuracion, la clase principal y aquellas 
+que estan anotadas con `@Generated`.
+* El proyecto cuenta con 0 Code Smells según SonarQube (con la configuración default de Java)
+* La eleccion de Redis como almacenamiento principal no es caprichosa. Se decidio optar por redis
+por su excelente performance (O(1)) en la inserción en Conjuntos, y verificar la membresía de un elemento. 
+  Ademas, es facil escalarlo de manera horizontal, ante una fluctuacion muy grande de requests
+  Fuente: https://redis.io/topics/data-types

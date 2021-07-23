@@ -11,6 +11,7 @@ public class OpenApiConfig {
     public OpenAPI apiDefinition() {
         return new OpenAPI().info(new Info()
                 .title("Mutants Api")
+                .version("1.0.0")
                 .contact(new Contact().name("Eduardo Hernandez").email("hernandezed.1991@gmail.com"))
                 .description("Mutant discovery service for Magneto"));
     }
